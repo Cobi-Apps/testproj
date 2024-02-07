@@ -24,6 +24,11 @@ def commits():
     return process_git('log --pretty=oneline')
 
 
+def status_up_to_date():
+    branch_status =  process_git('status')
+    return 'up to date' in branch_status.split('\n')[1]
+
+
 def get_version():
     return process_git('describe --tags --abbrev=0')
 
@@ -43,6 +48,7 @@ def commits_after_tag():
 def main():
     version = get_version()
     branch = get_branch()
+    print (status_up_to_date())
     print(f'Branch:  {branch}\nVersion: {version}')
     if not re.search('[0-9]*.[0-9]*.[0-9]*', version):
         print ('Last tag is not a compatible version number')
