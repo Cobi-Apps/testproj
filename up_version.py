@@ -65,7 +65,7 @@ def main():
             set_tag(new_version)
             print(f'New version {new_version}')
         else:
-            print(f'Not updated')
+            print(f'Not updated, commits after version/tag {commits_after_tag()}')
 
 
 if __name__ == '__main__':
