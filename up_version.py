@@ -35,7 +35,7 @@ def get_version():
 
 def set_tag(tag):
     process_git(f'tag {tag}')
-    process_git(f'git push origin {tag}')
+    process_git(f'push origin {tag}')
 
 
 def commits_after_tag():
