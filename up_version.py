@@ -29,7 +29,8 @@ def get_version():
 
 
 def set_tag(tag):
-    return process_git(f'tag {tag}')
+    process_git(f'tag {tag}')
+    process_git(f'git push origin {tag}')
 
 
 def commits_after_tag():
@@ -56,8 +57,8 @@ def main():
                 'm': 1,
                 'j': 0,
             }
-            while version_increase not in list(release_types.keys()):
-                version_increase = input('Type of release major(j)/minor(m)/patch(p) or Q to quit?').lower()
+            while version_increase not in list(release_types.keys()) + ['q']:
+                version_increase = input('Type of release major(j)/minor(m)/patch(p) or Q to quit?  ').lower()
             if version_increase == 'q':
                 return
             version_numbers[release_types[version_increase]] += 1
