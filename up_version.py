@@ -41,11 +41,13 @@ def commits_after_tag():
 
 def main():
     version = get_version()
+    branch = get_branch()
+    print(f'Branch:  {branch}\nVersion: {version}')
     if not re.search('[0-9]*.[0-9]*.[0-9]*', version):
         print ('Last tag is not a compatible version number')
         return
     else:
-        if commits_after_tag():
+        if commits_after_tag() and branch.lower() in ['master', 'main']:
             version_numbers = [int(d) for d in version.split('.')]
             version_increase = 'x'
             release_types = {
@@ -61,9 +63,9 @@ def main():
             version_numbers[release_types[version_increase]] += 1
             new_version = '.'.join([str(v) for v in version_numbers])
             set_tag(new_version)
-            print(new_version)
+            print(f'New version {new_version}')
         else:
-            print(f'Current version {version}')
+            print(f'Not updated, commits after version/tag {commits_after_tag()}')
 
 
 if __name__ == '__main__':
