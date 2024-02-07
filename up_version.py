@@ -39,24 +39,32 @@ def commits_after_tag():
     return int(commits_no.split('-')[1])
 
 
-version = get_version()
-if re.search('[0-9]*.[0-9]*.[0-9]*', version) and commits_after_tag():
+def main():
+    version = get_version()
+    if not re.search('[0-9]*.[0-9]*.[0-9]*', version):
+        print ('Last tag is not a compatible version number')
+        return
+    else:
+        if commits_after_tag():
+            version_numbers = [int(d) for d in version.split('.')]
+            version_increase = 'x'
+            release_types = {
+                'p': 2,
+                '': 2,
+                'm': 1,
+                'j': 0,
+            }
+            while version_increase not in list(release_types.keys()):
+                version_increase = input('Type of release major(j)/minor(m)/patch(p) or Q to quit?').lower()
+            if version_increase == 'q':
+                return
+            version_numbers[release_types[version_increase]] += 1
+            new_version = '.'.join([str(v) for v in version_numbers])
+            set_tag(new_version)
+            print(new_version)
+        else:
+            print(f'Current version {version}')
 
-    version_numbers = [int(d) for d in version.split('.')]
-    version_increase = 'x'
 
-    release_types = {
-        'p': 2,
-        '': 2,
-        'm': 1,
-        'j': 0,
-    }
-
-    while version_increase not in list(release_types.keys()):
-        version_increase = input('Type of release patch(p)/minor(m)/major(j)?')
-
-    version_numbers[release_types[version_increase]] += 1
-    set_tag('.'.join([str(v) for v in version_numbers]))
-    print ('.'.join([str(v) for v in version_numbers]))
-
-
+if __name__ == '__main__':
+    main()
